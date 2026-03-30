@@ -1,8 +1,10 @@
 name: Playwright VPS Test
-on: [push]
+on: 
+  push:
+  workflow_dispatch: # This is for n8n and manual triggers
 
 jobs:
-  playwright-test:
+  playwright-runner:      # Your original, preferred name
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -12,6 +14,4 @@ jobs:
         run: |
           # Use the persistent venv we made on the VPS home dir
           source ~/venv-playwright/bin/activate
-          
-          # Run the script (no more install steps!)
           python3 playground-plr.py
