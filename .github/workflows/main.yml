@@ -2,19 +2,16 @@ name: Playwright VPS Test
 on: [push]
 
 jobs:
-  playwright:
+  playwright-test:
     runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        run: sudo apt-get update && sudo apt-get install -y python3-pip
-
-      - name: Install dependencies
+      - name: Run Playwright
         run: |
-          pip3 install playwright
-          playwright install chromium --with-deps
-
-      - name: Run Playwright script
-        run: python3 playground-plr.py
+          # Use the persistent venv we made on the VPS home dir
+          source ~/venv-playwright/bin/activate
+          
+          # Run the script (no more install steps!)
+          python3 playground-plr.py
