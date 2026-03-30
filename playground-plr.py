@@ -1,21 +1,19 @@
+import sys
 from playwright.sync_api import sync_playwright
 
-def run():
+def get_title(url):
     with sync_playwright() as p:
-        # Launching headless (standard for VPS)
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
-        
-        target_url = "https://example.com"
-        print(f"Navigating to {target_url}...")
-        
-        page.goto(target_url)
-        title = page.title()
-        
-        print(f"--- Success! ---")
-        print(f"Page Title: {title}")
-        
+        page.goto(url)
+        print(f"Title of {url}: {page.title()}")
         browser.close()
 
 if __name__ == "__main__":
-    run()
+    # Check if a URL was passed as a command-line argument
+    if len(sys.argv) > 1:
+        target = sys.argv[1]
+    else:
+        target = "https://example.com"  # Fallback default
+        
+    get_title(target)

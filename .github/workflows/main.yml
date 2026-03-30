@@ -1,10 +1,15 @@
 name: Playwright VPS Test
 on: 
   push:
-  workflow_dispatch: # This is for n8n and manual triggers
+  workflow_dispatch:
+    inputs:
+      target_url:                     
+        description: 'URL to scrape'
+        required: true
+        default: 'https://example.com'
 
 jobs:
-  playwright-runner:      # Your original, preferred name
+  playwright-runner:
     runs-on: self-hosted
     steps:
       - name: Checkout code
@@ -12,6 +17,6 @@ jobs:
 
       - name: Run Playwright
         run: |
-          # Use the persistent venv we made on the VPS home dir
           source ~/venv-playwright/bin/activate
-          python3 playground-plr.py
+          # Pass the input from GitHub to the Python script as an argument
+          python3 playground-plr.py "${{ github.event.inputs.target_url }}"
